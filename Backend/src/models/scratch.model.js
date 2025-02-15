@@ -14,12 +14,13 @@ const cardSchema = new mongoose.Schema({
         ref : "User"
      },
      validity : {
-        type:Date,
+        type:String,
         required:true
      },
      isPublished : {
         type:Boolean,
-        default:true
+        default:true,
+        required : false
      }
 },{timestamps:true})
 

@@ -6,7 +6,6 @@ import multer from "multer"
 const upload = multer()
 const router = Router();
 //router.use(verifyJWT)
-// middleware to verify JWT token
 router.route( "/register").post(upload.none() ,RegisterUser)
 router.route("/login").post(upload.none(),loginUser);
 

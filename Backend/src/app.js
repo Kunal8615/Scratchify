@@ -21,7 +21,9 @@ app.get("/", (req, res) => {
     res.send("Welcome to the demo API! Use the available routes to interact with the platform.");
 });
 import userRouter from "../src/routes/user.route.js"
+import cardRoute from "../src/routes/card.route.js"
 
 app.use("/api/v3/users", userRouter);
+app.use("/api/v3/cards", cardRoute);
 
 export { app };
