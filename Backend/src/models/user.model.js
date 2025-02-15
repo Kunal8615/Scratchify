@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre("save", async function(next){
     if(!this.isModified("password")) return next();
     try{
-        const hashedPassword = await bycrpt.hash(this.password, 10);
+        const hashedPassword = await bcrypt.hash(this.password, 10);
         this.password = hashedPassword;
        return next();
     }catch(err){
@@ -45,7 +45,7 @@ UserSchema.pre("save", async function(next){
 
 //COMPARE PASSWORD WITH DATABASE
 UserSchema.methods.isPasswordCorrect = async function(password) {
-    return await bycrpt.compare(password, this.password);
+    return await bcrypt.compare(password, this.password);
 }
 
 UserSchema.methods.generateAccessToken = async function(){

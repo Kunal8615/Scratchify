@@ -8,34 +8,33 @@ const verifyJWT = asynchandler(async (req, _, next) => {
     let decodedToken;
 
     try {
-      
-        token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
+        // Get token from cookies or Authorization header
+        token = req.cookies?.accessToken || req.headers.authorization?.replace("Bearer ", "");
 
         if (!token) {
-            throw new Apierror(401, "Unauthorized request");
+            throw new Apierror(401, "Unauthorized request: Token missing");
         }
 
-       
-        if (typeof token !== 'string' || !token.trim()) {
-            throw new Apierror(401, "Invalid token format");
+        // Verify the token
+        try {
+            decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        } catch (error) {
+            throw new Apierror(401, "Invalid or expired access token");
         }
 
-       
-        decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);       
+        // Find user in the database
         const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
-
         if (!user) {
-            throw new Apierror(401, "Invalid Access Token");
+            throw new Apierror(401, "Invalid Access Token: User does not exist");
         }
 
-     
+        // Attach user to the request
         req.user = user;
         next();
     } catch (error) {
-        
-        console.error("Error in verifyJWT middleware:", error);
-        throw new Apierror(401, error?.message || "Invalid access token");
+        console.error("Error in verifyJWT middleware:", error.message);
+        throw new Apierror(401, error.message || "Unauthorized request");
     }
-})
+});
 
 export default verifyJWT;
