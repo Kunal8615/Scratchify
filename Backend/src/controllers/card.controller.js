@@ -28,7 +28,7 @@ const uploadCard = asynchandler(async (req, res) => {
         code,
         owner: req.user?._id,
         validity,
-        
+
     });
 
     if (!newCard) {
@@ -41,29 +41,29 @@ const uploadCard = asynchandler(async (req, res) => {
     return res.status(200).json(new Apiresponce(200, cardData, "Card Successfully Uploaded"));
 });
 
-const recentCard = asynchandler (async(req,res)=>{
-        const topThereCard = await Card.aggregate([
-            {
-                $match: {
-                    isPublished: true
-                },
+const recentCard = asynchandler(async (req, res) => {
+    const topThereCard = await Card.aggregate([
+        {
+            $match: {
+                isPublished: true
+            },
 
-            },
-            {
-                $sort: {
-                    createdAt: -1
-                }
-            },
-            {
-                $limit: 3
+        },
+        {
+            $sort: {
+                createdAt: -1
             }
-        ]);
-        return res.status(200).json(new Apiresponce(200, topThereCard, "Top 3 Recently Uploaded Cards"));
+        },
+        {
+            $limit: 3
+        }
+    ]);
+    return res.status(200).json(new Apiresponce(200, topThereCard, "Top 3 Recently Uploaded Cards"));
 })
 
-const companyCard = asynchandler(async(req,res)=>{
-    const {companyName} = req.params;
-    if(!companyName){
+const companyCard = asynchandler(async (req, res) => {
+    const { companyName } = req.params;
+    if (!companyName) {
         throw new Apierror(400, "Company name is required");
     }
     const companyCards = await Card.find({
@@ -81,25 +81,24 @@ const cardUsed = asynchandler(async (req, res) => {
         throw new Apierror(400, "Card ID is required");
     }
 
-    // ✅ Pehle Card find karo
+
     const card = await Card.findById(cardId);
     if (!card) {
         throw new Apierror(404, "Card does not exist");
     }
 
-    
+
     await Card.findByIdAndDelete(cardId);
 
-    
     const user = await User.findById(req.user?._id);
     if (!user) {
         throw new Apierror(404, "User not found");
     }
 
-    user.cardTaken += 1; // 
-    await user.save(); // 
+    user.cardTaken += 1;
+    await user.save();
 
-    console.log("Updated User:", user); 
+    console.log("Updated User:", user);
 
     return res.status(200).json(new Apiresponce(200, {}, "Card Successfully Used"));
 });
@@ -107,4 +106,4 @@ const cardUsed = asynchandler(async (req, res) => {
 
 
 
-export { uploadCard,recentCard,companyCard,cardUsed};
+export { uploadCard, recentCard, companyCard, cardUsed };
