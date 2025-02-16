@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
         type : String,
         required : [true, "Password is required"]
     },
+    cardTaken : {
+        type : Number,
+        default : 0
+    },
     refreshToken : {
         type : String
     }

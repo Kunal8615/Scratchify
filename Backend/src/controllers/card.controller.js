@@ -1,4 +1,5 @@
 import Card from "../models/scratch.model.js";
+import User from "../models/user.model.js";
 import { asynchandler } from "../utils/Asynchander.js";
 import { Apierror } from "../utils/Apierror.js";
 import { Apiresponce } from "../utils/Apiresponce.js";
@@ -73,5 +74,37 @@ const companyCard = asynchandler(async(req,res)=>{
     return res.status(200).json(new Apiresponce(200, companyCards, `Cards Uploaded by ${companyName}`));
 })
 
+const cardUsed = asynchandler(async (req, res) => {
+    const { cardId } = req.params;
 
-export { uploadCard,recentCard,companyCard};
+    if (!cardId) {
+        throw new Apierror(400, "Card ID is required");
+    }
+
+    // ✅ Pehle Card find karo
+    const card = await Card.findById(cardId);
+    if (!card) {
+        throw new Apierror(404, "Card does not exist");
+    }
+
+    
+    await Card.findByIdAndDelete(cardId);
+
+    
+    const user = await User.findById(req.user?._id);
+    if (!user) {
+        throw new Apierror(404, "User not found");
+    }
+
+    user.cardTaken += 1; // 
+    await user.save(); // 
+
+    console.log("Updated User:", user); 
+
+    return res.status(200).json(new Apiresponce(200, {}, "Card Successfully Used"));
+});
+
+
+
+
+export { uploadCard,recentCard,companyCard,cardUsed};

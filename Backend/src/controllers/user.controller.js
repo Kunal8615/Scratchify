@@ -96,4 +96,18 @@ const loginUser = asynchandler(async (req, res) => {
             "User logged in successfully"));
 })
 
-export {RegisterUser,loginUser};
+const getUser = asynchandler(async (req, res) => {
+    try {
+    console.log(req.user)
+        const user = await User.findById(req.user?._id);
+        if (!user) {
+            throw new Apierror(404, "User not found");
+        }
+
+        return res.status(200).json(new Apiresponce(200, user, "User's data fetched"));
+    } catch (error) {
+        res.status(500).json(new Apiresponce(500,{}, error.message));
+    }
+});
+
+export {RegisterUser,loginUser,getUser};
