@@ -33,7 +33,7 @@ const uploadCard = asynchandler(async (req, res) => {
 
     });
     //update user
-    user.totalUpload +=1 ;
+    user.totalUpload += 1;
     user.remainingToAvail = user.totalUpload - user.cardTaken;
     await user.save();
 
@@ -44,7 +44,7 @@ const uploadCard = asynchandler(async (req, res) => {
     // Retrieve newly created card data
     const cardData = await Card.findById(newCard._id);
 
-    return res.status(200).json(new Apiresponce(200, {cardData,user}, "Card Successfully Uploaded"));
+    return res.status(200).json(new Apiresponce(200, { cardData, user }, "Card Successfully Uploaded"));
 });
 
 const recentCard = asynchandler(async (req, res) => {
@@ -84,7 +84,7 @@ const cardUsed = asynchandler(async (req, res) => {
 
     const user = await User.findById(req.user?._id);
 
-    if(user.remainingToAvail == 0){
+    if (user.remainingToAvail == 0) {
         throw new Apierror(403, "No more cards available to take");
     }
     if (!cardId) {
@@ -100,7 +100,7 @@ const cardUsed = asynchandler(async (req, res) => {
 
     await Card.findByIdAndDelete(cardId);
 
-   
+
     if (!user) {
         throw new Apierror(404, "User not found");
     }
@@ -109,7 +109,7 @@ const cardUsed = asynchandler(async (req, res) => {
     await user.save();
 
     //remove cardcount from avaible
-    user.remainingToAvail =  user.totalUpload - user.cardTaken;
+    user.remainingToAvail = user.totalUpload - user.cardTaken;
     await user.save();
 
     console.log("Updated User:", user);
@@ -118,7 +118,7 @@ const cardUsed = asynchandler(async (req, res) => {
 });
 
 
-const decryptCode = asynchandler(async (req,res)=>{
+const decryptCode = asynchandler(async (req, res) => {
     const { cardId } = req.params;
     if (!cardId) {
         throw new Apierror(400, "Card Code is required");
@@ -131,15 +131,15 @@ const decryptCode = asynchandler(async (req,res)=>{
     res.status(200).json({
         _id: card._id,
         company: card.company,
-        code: card.decryptCode(), 
+        code: card.decryptCode(),
         owner: card.owner,
         validity: card.validity,
         isPublished: card.isPublished
     });
-     
+
 
 })
 
 
 
-export { uploadCard, recentCard, companyCard, cardUsed , decryptCode};
+export { uploadCard, recentCard, companyCard, cardUsed, decryptCode };
