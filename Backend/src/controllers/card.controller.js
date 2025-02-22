@@ -83,7 +83,7 @@ const cardUsed = asynchandler(async (req, res) => {
     const { cardId } = req.params;
 
     const user = await User.findById(req.user?._id);
-    
+
     if(user.remainingToAvail == 0){
         throw new Apierror(403, "No more cards available to take");
     }
@@ -118,6 +118,28 @@ const cardUsed = asynchandler(async (req, res) => {
 });
 
 
+const decryptCode = asynchandler(async (req,res)=>{
+    const { cardId } = req.params;
+    if (!cardId) {
+        throw new Apierror(400, "Card Code is required");
+    }
+    const card = await Card.findById(cardId);
+    if (!card) {
+        throw new Apierror(404, "Card does not exist");
+    }
+
+    res.status(200).json({
+        _id: card._id,
+        company: card.company,
+        code: card.decryptCode(), 
+        owner: card.owner,
+        validity: card.validity,
+        isPublished: card.isPublished
+    });
+     
+
+})
 
 
-export { uploadCard, recentCard, companyCard, cardUsed };
+
+export { uploadCard, recentCard, companyCard, cardUsed , decryptCode};
