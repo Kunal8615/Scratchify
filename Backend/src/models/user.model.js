@@ -29,6 +29,14 @@ const UserSchema = new mongoose.Schema({
         type : Number,
         default : 0
     },
+    totalUpload : {
+        type : Number,
+        default : 0
+    },
+    remainingToAvail: {
+        type : Number,
+        default : 0
+    },
     refreshToken : {
         type : String
     }

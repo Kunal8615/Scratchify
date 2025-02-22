@@ -13,6 +13,8 @@ const uploadCard = asynchandler(async (req, res) => {
         throw new Apierror(400, 'All fields (company, code, owner, validity) are required.');
     }
 
+    const user = await User.findById(req.user?._id);
+
     // Check if card already exists
     const existCard = await Card.findOne({ code: code, owner: req.user?._id });
 
@@ -30,6 +32,10 @@ const uploadCard = asynchandler(async (req, res) => {
         validity,
 
     });
+    //update user
+    user.totalUpload +=1 ;
+    user.remainingToAvail = user.totalUpload - user.cardTaken;
+    await user.save();
 
     if (!newCard) {
         throw new Apierror(500, 'Failed to create a new card.');
@@ -38,7 +44,7 @@ const uploadCard = asynchandler(async (req, res) => {
     // Retrieve newly created card data
     const cardData = await Card.findById(newCard._id);
 
-    return res.status(200).json(new Apiresponce(200, cardData, "Card Successfully Uploaded"));
+    return res.status(200).json(new Apiresponce(200, {cardData,user}, "Card Successfully Uploaded"));
 });
 
 const recentCard = asynchandler(async (req, res) => {
@@ -47,7 +53,6 @@ const recentCard = asynchandler(async (req, res) => {
             $match: {
                 isPublished: true
             },
-
         },
         {
             $sort: {
@@ -77,6 +82,11 @@ const companyCard = asynchandler(async (req, res) => {
 const cardUsed = asynchandler(async (req, res) => {
     const { cardId } = req.params;
 
+    const user = await User.findById(req.user?._id);
+    
+    if(user.remainingToAvail == 0){
+        throw new Apierror(403, "No more cards available to take");
+    }
     if (!cardId) {
         throw new Apierror(400, "Card ID is required");
     }
@@ -90,7 +100,7 @@ const cardUsed = asynchandler(async (req, res) => {
 
     await Card.findByIdAndDelete(cardId);
 
-    const user = await User.findById(req.user?._id);
+   
     if (!user) {
         throw new Apierror(404, "User not found");
     }
@@ -98,9 +108,13 @@ const cardUsed = asynchandler(async (req, res) => {
     user.cardTaken += 1;
     await user.save();
 
+    //remove cardcount from avaible
+    user.remainingToAvail =  user.totalUpload - user.cardTaken;
+    await user.save();
+
     console.log("Updated User:", user);
 
-    return res.status(200).json(new Apiresponce(200, {}, "Card Successfully Used"));
+    return res.status(200).json(new Apiresponce(200, user, "Card Successfully Used"));
 });
 
 
