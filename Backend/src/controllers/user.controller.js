@@ -57,43 +57,37 @@ const RegisterUser = asynchandler(async (req, res) => {
     
 })
 
-const loginUser = asynchandler(async (req, res) => {
-    const { email, username, password } = req.body; 
-    if (!username && !email) {
-        throw new Apierror(400, "Username or email is required");
-
+const loginUser = asynchandler(async (req,res)=>{
+    const {email, password} = req.body;
+    if (!email) {
+        throw new Apierror(400, "All fields are required");
     }
-    const user = await User.findOne({
-        $or: [{ username }, { email }]
-    });
+    const user = await User.findOne({email});
 
-    if (!user) {
-        throw new Apierror(404, "User does not exist");
+    if(!user){
+        throw new Apierror(401, "Invalid credentials");
     }
 
-    const isPasswordValid = await user.isPasswordCorrect(password);
-    if (!isPasswordValid) {
+    const isPasswordCorrect = await user.isPasswordCorrect(password)
+    if (!isPasswordCorrect) {
         throw new Apierror(401, "Invalid user credentials");
     }
 
-    const { accessToken, refreshToken } = await GenerateAccessAndRefreshTokens(user._id);
-
-    const loggedinUser = await User.findById(user._id).select("-password -refreshToken");
-
-    const options = {
+    
+    const {accessToken, refreshToken} = await GenerateAccessAndRefreshTokens(user._id)
+    const loggedUser = await User.findById(user._id).select("-password -refreshToken")
+    const option = {
         httpOnly: true,
         sameSite: "None",
-        secure: "true",
+        secure : "true",
         expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000)
-    };
-    console.log(loggedinUser, "login done");
+    }
+ console.log(loggedUser,"Login Done");
 
-    return res
-        .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
-        .json(new Apiresponce(200, { user: loggedinUser, accessToken, refreshToken },
-            "User logged in successfully"));
+ return res.status(200)
+ .cookie("accessToken", accessToken, option)
+ .cookie("refreshToken", refreshToken,option)
+ .json(new Apiresponce(200,{user : loggedUser},"User logged in successfully"));
 })
 
 const getUser = asynchandler(async (req, res) => {
