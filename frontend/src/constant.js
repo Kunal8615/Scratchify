@@ -1,1 +1,2 @@
-export const API_URL = 'http://localhost:5173/api/v3' ;
+export const API_URL = 'http://localhost:8000/api/v3' ;
+///backend link for hitting the request

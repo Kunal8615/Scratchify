@@ -55,7 +55,7 @@ const Login = () => {
       height: '100vh', // Full viewport height
       }}>
       <div className="w-full border-gray-200 border-2 max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
-        <h2 className="text-blue-950  border-opacity-50 border-2 border-blue-900 bg-slate-200 rounded-xl text-center text-2xl font-bold hover:text-orange-500 ">DataCloud ♾</h2>
+        <h2 className="text-blue-950  border-opacity-50 border-2 border-blue-900 bg-slate-200 rounded-xl text-center text-2xl font-bold hover:text-orange-500 ">Scratchify♾</h2>
        
        <div className='border-2 border-gray-300 p-4 rounded-xl'>
 
