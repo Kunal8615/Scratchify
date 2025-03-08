@@ -5,6 +5,7 @@ function FrontPage() {
   return (
     <>
     <Card company={"myntra"}/>
+    <Card company={"flipkart"}/>
     </>
   )
 }

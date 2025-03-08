@@ -1,67 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../constant";
 
-const CompanyCoupons = () => {
+const Coupon = () => {
   const { name } = useParams();
-  const [coupons, setCoupons] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_URL}/cards/companyCards/${name}`, {
+        credentials: "include", // ✅ Axios ke `withCredentials` ka alternative
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const result = await response.json(); //
+      console.log("➡️ API Response Data:", result);
+
+      setData(result?.data || []);
+    } catch (error) {
+      console.error("❌ Error fetching data:", error);
+      setError("Failed to fetch data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCoupons = async () => {
-      try {
-        const response = await fetch(`${API_URL}/cards/companyCards/${name}`, {
-          method: "GET",
-          credentials: "include", // ✅ Cookies/session support
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch coupons");
-        }
-
-        const data = await response.json();
-        setCoupons(data.data || []);
-        console.log(data);
-      } catch (error) {
-        setError("Error fetching coupons");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCoupons();
+    if (name) fetchData(); 
   }, [name]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
-      <h1 className="text-3xl font-bold text-center mb-6">
-        {name.toUpperCase()} Coupons
-      </h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      {loading && <p className="mt-4 text-blue-600">Loading data...</p>}
 
-      {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {error && <p className="mt-4 text-red-600">{error}</p>}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {coupons.length > 0 ? (
-          coupons.map((coupon) => (
-            <div
-              key={coupon._id}
-              className="bg-white p-6 rounded-lg shadow-md text-center"
-            >
-              <p className="font-bold text-lg">Code: {coupon.code}</p>
-              <p>Validity: {coupon.validity}</p>
-              <p className="text-gray-500 text-sm">
-                Created At: {new Date(coupon.createdAt).toLocaleDateString()}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p className="text-center col-span-3">No Coupons Available</p>
-        )}
-      </div>
+      {data.length > 0 && (
+        <div className="mt-4 p-4 border rounded-lg w-80 bg-white shadow-md">
+          {/* <h2 className="text-lg font-bold">API Response:</h2> */}
+          <ul className="text-sm">
+            {data.map((item) => (
+              <li key={item._id} className="border-b py-2">
+                <strong>Company:</strong> {item.company} <br />
+                <strong>Code:</strong> {item.code}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {data.length === 0 && !loading && (
+        <p className="mt-4 text-gray-600">No data found for this company.</p>
+      )}
     </div>
   );
 };
 
-export default CompanyCoupons;
+export default Coupon;
