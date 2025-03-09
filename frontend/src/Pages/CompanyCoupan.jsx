@@ -50,7 +50,7 @@ const Coupon = () => {
             {data.map((item) => (
               <li key={item._id} className="border-b py-2">
                 <strong>Company:</strong> {item.company} <br />
-                <strong>Code:</strong> {item.code}
+                <strong>Code:</strong> {item._id}
               </li>
             ))}
           </ul>

@@ -36,7 +36,7 @@ const SignUp = () => {
     setLoading(true); // Set loading to true
 
     const formData = new FormData();
-    formData.append("fullname", user.fullname);
+    formData.append("name", user.name);
     formData.append("username", user.username);
     formData.append("email", user.email);
     formData.append("password", user.password);
@@ -46,7 +46,7 @@ const SignUp = () => {
     
 
     try {
-      const response = await fetch(`${API_URL}/user/resigter`,{
+      const response = await fetch(`${API_URL}/users/register`,{
         credentials : "include",
         body: formData,
         method : "POST",
@@ -83,13 +83,13 @@ const SignUp = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="form-group">
             <label className="block text-sm font-medium mb-1">
-              Enter your Fullname
+              Enter your Name
             </label>
             <input
               type="text"
-              name="fullname"
-              placeholder="Enter your Fullname"
-              value={user.fullname}
+              name="name"
+              placeholder="Enter your name"
+              value={user.name}
               onChange={handleChange}
               required
               className="w-full p-2 border border-gray-300 rounded-md"
@@ -136,18 +136,7 @@ const SignUp = () => {
               required
               className="w-full p-2 border border-gray-300 rounded-md"
               />
-          </div>
-          <div className="form-group">
-            <label className="block text-sm font-medium mb-1">profilePicture</label>
-            <input
-              type="file"
-              name="profilePicture"
-              onChange={handleChange}
-              accept="image/*"
-              className="w-full p-2 border border-gray-300 rounded-md"
-              />
-          </div>
-         
+          </div>       
           <button
             type="submit"
             className="w-full py-2 bg-blue-900 text-white rounded-md hover:bg-blue-600 transition duration-200"

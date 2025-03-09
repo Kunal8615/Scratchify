@@ -4,9 +4,12 @@ import { useNavigate } from "react-router-dom";
 const Card = ({ company }) => {
   const navigate = useNavigate();
 
+  // ✅ Uppercase conversion sahi tariqe se
+  const text = company?.toUpperCase() ;
+
   const handleClick = () => {
     if (company) {
-      navigate(`/layout/company/${company}`); // ✅ Correct path updated
+      navigate(`/layout/company/${company}`);
     } else {
       console.warn("❌ Company prop missing! Cannot redirect.");
     }
@@ -18,8 +21,7 @@ const Card = ({ company }) => {
         className="w-64 p-6 bg-blue-500 text-white rounded-lg shadow-lg cursor-pointer hover:bg-blue-600 transition duration-300"
         onClick={handleClick}
       >
-        <h2 className="text-xl font-bold text-center">{company}</h2>
-       
+        <h2 className="text-xl font-bold text-center">{text}</h2>  
       </div>
     </div>
   );

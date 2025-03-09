@@ -5,11 +5,11 @@ import { Apierror } from "../utils/Apierror.js";
 import { Apiresponce } from "../utils/Apiresponce.js";
 
 const uploadCard = asynchandler(async (req, res) => {
-    const { company, code, validity } = req.body;
+    const { company, code, validity ,description} = req.body;
     console.log(req.body);
 
     // Validate input fields
-    if (!company || !code || !validity) {
+    if (!company || !code || !validity ||!description) {
         throw new Apierror(400, 'All fields (company, code, owner, validity) are required.');
     }
 
@@ -28,6 +28,7 @@ const uploadCard = asynchandler(async (req, res) => {
     const newCard = await Card.create({
         company,
         code,
+        description,
         owner: req.user?._id,
         validity,
 
@@ -131,6 +132,7 @@ const decryptCode = asynchandler(async (req, res) => {
     res.status(200).json({
         _id: card._id,
         company: card.company,
+        description : card.description,
         code: card.decryptCode(),
         owner: card.owner,
         validity: card.validity,
@@ -140,6 +142,44 @@ const decryptCode = asynchandler(async (req, res) => {
 
 })
 
+const searchCard = asynchandler(async (req, res) => {
+    try {
+        const { searchQuery } = req.query;
+
+        // ✅ Search query validation
+        if (!searchQuery) {
+            throw new Apierror(400, "Search query is required");
+        }
+
+        const data = await Card.aggregate([
+            {
+                $match: {
+                    description: { $regex: searchQuery, $options: 'i' }
+                }
+            },
+            {
+                $limit: 3   
+            },
+           
+        ]);
+
+        console.log(data);
+
+        // ✅ Empty data handling
+        if (!data || data.length === 0) {
+            throw new Apierror(404, "No matching data found.");
+        }
+
+        // ✅ Successful response
+        return res.status(200).json(new Apiresponce(200, data, "Data fetched successfully"));
+        
+    } catch (error) {
+        return res.status(error.statusCode || 500).json(
+            new Apiresponce(error.statusCode || 500, null, error.message || "Error occurred in SearchData")
+        );
+    }
+});
 
 
-export { uploadCard, recentCard, companyCard, cardUsed, decryptCode };
+
+export { uploadCard, recentCard, companyCard, cardUsed, decryptCode ,searchCard};
