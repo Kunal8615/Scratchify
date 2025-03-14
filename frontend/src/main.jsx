@@ -6,7 +6,7 @@ import Login from "./Pages/Login.jsx";
 import Coupon from "./Pages/CompanyCoupan.jsx"; // ✅ Correct import
 import Signup from "./Pages/Signup.jsx"; 
 import Layout from "./Layout.jsx";
-
+import AvailCard from "./Pages/availCard.jsx";
 import FrontPage from "./Pages/FrontPage.jsx";
 
 const route = createBrowserRouter([
@@ -29,7 +29,12 @@ const route = createBrowserRouter([
       {
         path: "company/:name",  // ✅ Relative path use kiya (Corrected)
         element: <Coupon />
+      },
+      {
+        path: "availCoupan/:decryptedData",
+        element: <AvailCard />
       }
+      ///layout/availCoupan/${decryptedData}`
     ]
   }
 ]);
