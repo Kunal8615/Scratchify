@@ -23,8 +23,8 @@ const AvailCard = () => {
         }
 
         const result = await response.json();
-        console.log(result);
-        console.log("➡️ API Response Data:", result);
+     //   console.log(result);
+     //   console.log("➡️ API Response Data:", result);
         setData(result);
       } catch (error) {
         console.error("❌ Error fetching data:", error);
