@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { API_URL } from '../constant.js';
+import { useNavigate } from 'react-router-dom';
 
 const AvailCard = () => {
-  const { decryptedData } = useParams();  // ✅ Extracting correct param
-  const [data, setData] = useState(null); // ✅ Initial state as null
+  const { decryptedData } = useParams();
+  const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const router = ()=>{
+    navigate("/layout");
+  }
 
   useEffect(() => {
-    if (!decryptedData) return; 
+    if (!decryptedData) return;
 
     const fetchData = async () => {
       try {
@@ -23,9 +29,14 @@ const AvailCard = () => {
         }
 
         const result = await response.json();
-     //   console.log(result);
-     //   console.log("➡️ API Response Data:", result);
         setData(result);
+
+        // ✅ Only delete the card if data retrieval is successful
+        await fetch(`${API_URL}/cards/cardUsed/${decryptedData}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+
       } catch (error) {
         console.error("❌ Error fetching data:", error);
         setError("Failed to fetch data");
@@ -49,6 +60,7 @@ const AvailCard = () => {
       <p><strong>Owner:</strong> {data.owner}</p>
       <p><strong>Validity:</strong> {data.validity}</p>
       <p><strong>Description:</strong> {data.description}</p>
+      <button onClick={()=>router()}> Explore More</button>
     </div>
   );
 };
