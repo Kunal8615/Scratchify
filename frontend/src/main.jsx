@@ -8,6 +8,7 @@ import Signup from "./Pages/Signup.jsx";
 import Layout from "./Layout.jsx";
 import AvailCard from "./Pages/availCard.jsx";
 import FrontPage from "./Pages/FrontPage.jsx";
+import UploadCard from "./Pages/UploadCard.jsx";
 
 const route = createBrowserRouter([
   {
@@ -33,8 +34,12 @@ const route = createBrowserRouter([
       {
         path: "availCoupan/:decryptedData",
         element: <AvailCard />
+        ///layout/availCoupan/${decryptedData}`
+      },
+      {
+        path: "uploadcard",
+        element: <UploadCard />
       }
-      ///layout/availCoupan/${decryptedData}`
     ]
   }
 ]);

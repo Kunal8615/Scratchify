@@ -33,6 +33,32 @@ const Coupon = () => {
     }
   };
 
+  const check = async (cardId) => {
+    try {
+      const response = await fetch(`${API_URL}/users/getUser`, {
+        credentials: "include",
+        method: "GET",
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+  
+      const userData = await response.json();
+      console.log(userData);
+  
+      if (userData.data.remainingToAvail == 0) {
+        alert("Remaining card to avail is 0, please upload a card");
+        navigate("/layout/uploadcard");
+      } else {
+        decryptCard(cardId); 
+      }
+    } catch (error) {
+      console.error("Error in check function:", error);
+      decryptCard(cardId);
+    }
+  };
+
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -77,7 +103,7 @@ const Coupon = () => {
                 <strong>Company:</strong> {item.company} <br />
                 <strong>Code:</strong> {item._id}
                 <button
-                onClick={() => decryptCard(item._id)} // ✅ Now using arrow function
+                onClick={() => check(item._id)} // ✅ Now using arrow function
                 className="mt-3 bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-full"
               >
                 View Details
