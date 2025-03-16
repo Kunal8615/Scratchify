@@ -6,6 +6,7 @@ import Login from "./Pages/Login.jsx";
 import Coupon from "./Pages/CompanyCoupan.jsx"; // ✅ Correct import
 import Signup from "./Pages/Signup.jsx"; 
 import Layout from "./Layout.jsx";
+//import './index.css'
 import AvailCard from "./Pages/availCard.jsx";
 import FrontPage from "./Pages/FrontPage.jsx";
 import UploadCard from "./Pages/UploadCard.jsx";
