@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-gradient-to-r from-black via-gray-900 to-black border-b border-gray-800">
@@ -70,11 +71,14 @@ function Header() {
 
           {/* Right Side */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 transform hover:scale-105">
+            <button 
+              onClick={() => navigate('uploadcard')} 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 transform hover:scale-105"
+            >
               Upload Card
             </button>
             <button className="border-2 border-purple-500 text-purple-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-500 hover:text-white transition-all duration-200 transform hover:scale-105">
-              Login
+              Log Out
             </button>
           </div>
 

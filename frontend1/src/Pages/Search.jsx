@@ -119,36 +119,49 @@ const Search = () => {
       </div>
 
       {/* Results Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((item) => (
           <div
             key={item._id}
-            className="bg-gray-900 border border-purple-500/30 rounded-lg 
-              p-6 hover:border-purple-500/50 transition duration-300
-              transform hover:scale-105"
+            className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm 
+              border border-gray-700/50 rounded-xl p-6 
+              hover:shadow-xl hover:shadow-purple-500/10 
+              transition-all duration-300"
           >
-            <div className="flex flex-col items-center space-y-4">
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 
-                p-3 rounded-full">
-                🎟️
+            <div className="flex flex-col h-full">
+              {/* Company & Validity */}
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+                  {item.company}
+                </h3>
+                <span className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                  {item.validity || 'Limited Time'}
+                </span>
               </div>
-              
-              <h3 className="text-lg font-medium text-center 
-                bg-gradient-to-r from-purple-400 to-pink-500 
-                text-transparent bg-clip-text">
-                {item.description}
-              </h3>
 
-              <button
-                onClick={() => handleCardClick(item._id)}
-                className="w-full px-4 py-2 rounded-lg
-                  bg-gradient-to-r from-purple-600 to-pink-600
-                  text-white text-sm font-medium
-                  hover:from-purple-700 hover:to-pink-700
-                  transition duration-200"
-              >
-                View Details
-              </button>
+              {/* Description */}
+              <div className="flex-grow">
+                <p className="text-gray-300 line-clamp-2 min-h-[48px]">
+                  {item.description}
+                </p>
+              </div>
+
+              {/* Button Section */}
+              <div className="mt-6">
+                <button
+                  onClick={() => handleCardClick(item._id)}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 
+                    hover:from-purple-700 hover:to-pink-700 text-white 
+                    py-3 px-4 rounded-lg font-medium 
+                    transition-all duration-200 transform hover:scale-[1.02]
+                    flex items-center justify-center gap-2"
+                >
+                  <span>View Details</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         ))}

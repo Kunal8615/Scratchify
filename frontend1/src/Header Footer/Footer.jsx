@@ -11,7 +11,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* Brand Section */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 animate-text bg-200%">
               SCRATCHIFY
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -69,17 +69,12 @@ function Footer() {
           {/* Contact/Newsletter Section */}
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-white">Stay Updated</h4>
-            <p className="text-gray-400 text-sm">Get notified about new deals and offers!</p>
-            <div className="flex space-x-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="bg-gray-800 text-gray-200 px-4 py-2 rounded-l-full focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 text-sm"
-              />
-              <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-r-full text-sm font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200">
-                Subscribe
-              </button>
-            </div>
+            <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 animate-text bg-200% font-medium">
+              Get notified about new deals and offers! 🎉
+            </p>
+            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 animate-text bg-200%">
+              SCRATCHIFY
+            </h3>
           </div>
         </div>
 

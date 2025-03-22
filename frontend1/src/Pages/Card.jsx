@@ -13,6 +13,14 @@ const Card = ({ company, className }) => {
     }
   };
 
+  // Company ke according different text styles
+  const textStyles = {
+    myntra: "text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-800",
+    flipkart: "text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-800",
+    ajio: "text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-500",
+    amazone: "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500"
+  };
+
   return (
     <div 
       onClick={handleClick}
@@ -43,7 +51,7 @@ const Card = ({ company, className }) => {
         </div>
 
         {/* Company Name */}
-        <h2 className="text-xl md:text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+        <h2 className={`text-xl md:text-2xl font-bold text-center ${textStyles[company]}`}>
           {text}
         </h2>
 
@@ -58,6 +66,24 @@ const Card = ({ company, className }) => {
             <span>•</span>
             <span>Multiple Offers</span>
           </div>
+        </div>
+
+        {/* Optional: Card Count or Badge */}
+        <div className="mt-4 inline-block px-3 py-1 rounded-full bg-opacity-20 border"
+          style={{
+            backgroundColor: company === 'myntra' ? 'rgba(99,102,241,0.1)' :
+                            company === 'flipkart' ? 'rgba(34,211,238,0.1)' :
+                            company === 'ajio' ? 'rgba(244,63,94,0.1)' :
+                            'rgba(16,185,129,0.1)',
+            borderColor: company === 'myntra' ? 'rgba(99,102,241,0.3)' :
+                        company === 'flipkart' ? 'rgba(34,211,238,0.3)' :
+                        company === 'ajio' ? 'rgba(244,63,94,0.3)' :
+                        'rgba(16,185,129,0.3)'
+          }}
+        >
+          <span className={`${textStyles[company]} text-sm font-medium`}>
+            New Offers
+          </span>
         </div>
 
         {/* Hover Effect Button */}
