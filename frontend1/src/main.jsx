@@ -21,6 +21,7 @@ const route = createBrowserRouter([
     element: <Signup />
   },
   {
+    
     path: "/layout",
     element: <Layout />,
     children: [

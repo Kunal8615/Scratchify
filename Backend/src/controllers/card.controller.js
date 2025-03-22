@@ -29,8 +29,8 @@ const uploadCard = asynchandler(async (req, res) => {
         company,
         code,
         description,
-        owner: req.user?._id,
-        validity,
+        owner: user.username,
+        validity
 
     });
     //update user
