@@ -85,7 +85,7 @@ function Footer() {
               © {currentYear} Scratchify. All rights reserved.
             </p>
             <p className="text-gray-400 text-sm">
-              Built with ❤️ by <span className="text-purple-400">Kunal</span>
+              Built by <span className="text-purple-400">Kunal</span>
             </p>
           </div>
         </div>

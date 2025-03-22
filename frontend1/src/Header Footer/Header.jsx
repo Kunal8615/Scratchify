@@ -1,9 +1,33 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import background from "../images/background.png";
+import { API_URL } from '../constant.js';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // API call
+      const response = await fetch(`${API_URL}/users/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      
+      });
+
+      if (response.ok) {
+     
+        navigate('/');
+      } else {
+        throw new Error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Optional: Show error message to user
+      alert('Logout failed. Please try again.');
+    }
+  };
 
   return (
     <nav className="bg-gradient-to-r from-black via-gray-900 to-black border-b border-gray-800">
@@ -42,21 +66,11 @@ function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Left Side */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/exchange" className="group">
-              <div className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                <span className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2 rounded-lg group-hover:from-purple-500/30 group-hover:to-pink-500/30">
-                  🎟️
-                </span>
-                <span className="group-hover:text-purple-400">Exchange</span>
-              </div>
-            </Link>
-            <Link to="/deals" className="group">
-              <div className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                <span className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2 rounded-lg group-hover:from-purple-500/30 group-hover:to-pink-500/30">
-                  💰
-                </span>
-                <span className="group-hover:text-purple-400">Deals</span>
-              </div>
+            <Link to="/layout" className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+              <span className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2 rounded-lg group-hover:from-purple-500/30 group-hover:to-pink-500/30">
+                🎟️
+              </span>
+              <span className="group-hover:text-purple-400">Exchange</span>
             </Link>
           </div>
 
@@ -77,7 +91,10 @@ function Header() {
             >
               Upload Card
             </button>
-            <button className="border-2 border-purple-500 text-purple-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-500 hover:text-white transition-all duration-200 transform hover:scale-105">
+            <button 
+              onClick={handleLogout}
+              className="border-2 border-purple-500 text-purple-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-500 hover:text-white transition-all duration-200 transform hover:scale-105"
+            >
               Log Out
             </button>
           </div>

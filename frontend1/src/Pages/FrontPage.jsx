@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from '../Pages/Card.jsx'
 import Search from './Search.jsx';
+import background from "../images/background.png";
 
 function FrontPage() {
   return (

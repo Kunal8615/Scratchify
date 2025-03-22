@@ -1,102 +1,222 @@
 import React, { useState } from "react";
 import { API_URL } from "../constant.js";
 import { useNavigate } from "react-router-dom";
+import background from "../images/background.png";
 
-const UploadCard = () => {
-  const [company, setCompany] = useState("");
-  const [code, setCode] = useState("");
-  const [validity, setValidity] = useState("");
-  const [description, setDescription] = useState("");
+const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    username: '',
+    email: '',
+    password: ''
+  });
 
   const navigate = useNavigate();
 
   // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    const form = new FormData();
-    form.append("company", company);
-    form.append("code", code);
-    form.append("validity", validity);
-    form.append("description", description);
+    // Add artificial delay to see loading animation
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     try {
-      const res = await fetch(`${API_URL}/cards/uploadCard`, {
+      const res = await fetch(`${API_URL}/users/register`, {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
         credentials: "include",
-        body: form, // ✅ Sending FormData
+        body: JSON.stringify(formData)
       });
 
       const result = await res.json();
       if (result.success) {
-        setCompany("");
-        setCode("");
-        setValidity("");
-        setDescription("");
-        navigate("/layout"); // ✅ Redirect on success
+        navigate("/"); // Redirect to login after successful signup
       } else {
-        alert("Failed to add coupon ❌");
+        alert("Signup failed ❌");
       }
     } catch (error) {
       console.error("Error:", error);
       alert("Something went wrong ❌");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mt-10">
-      <h2 className="text-2xl font-bold mb-4">Add New Coupon</h2>
+    <div 
+      className="min-h-screen flex items-center justify-center px-4 py-12 animate-fadeIn"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${background})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="max-w-md w-full space-y-6 bg-black/40 backdrop-blur-sm p-8 rounded-2xl border border-purple-500/20 animate-slideUp">
+        {/* Header */}
+        <div className="text-center">
+          <h2 className="gradient-text text-3xl font-extrabold">
+            Create Account
+          </h2>
+        </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="company"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          placeholder="Company Name"
-          className="w-full p-2 border rounded"
-          required
-        />
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name */}
+          <div>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              required
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              className="w-full px-4 py-3 rounded-lg bg-black/30 border border-purple-500/20 
+                text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 
+                focus:ring-1 focus:ring-purple-500"
+            />
+          </div>
 
-        <input
-          type="text"
-          name="code"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          placeholder="Coupon Code"
-          className="w-full p-2 border rounded"
-          required
-        />
+          {/* Username */}
+          <div>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              required
+              onChange={(e) => setFormData({...formData, username: e.target.value})}
+              className="w-full px-4 py-3 rounded-lg bg-black/30 border border-purple-500/20 
+                text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 
+                focus:ring-1 focus:ring-purple-500"
+            />
+          </div>
 
-        <input
-          type="text"
-          name="validity"
-          value={validity}
-          onChange={(e) => setValidity(e.target.value)}
-          placeholder="Validity (e.g., 1d)"
-          className="w-full p-2 border rounded"
-          required
-        />
+          {/* Email */}
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              required
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              className="w-full px-4 py-3 rounded-lg bg-black/30 border border-purple-500/20 
+                text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 
+                focus:ring-1 focus:ring-purple-500"
+            />
+          </div>
 
-        <input
-          type="text"
-          name="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description"
-          className="w-full p-2 border rounded"
-          required
-        />
+          {/* Password */}
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              className="w-full px-4 py-3 rounded-lg bg-black/30 border border-purple-500/20 
+                text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 
+                focus:ring-1 focus:ring-purple-500"
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition"
-        >
-          Submit
-        </button>
-      </form>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3 px-4 rounded-lg text-white font-medium
+              bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 
+              hover:to-pink-700 transition-all duration-200 transform hover:scale-[1.02]"
+          >
+            {isLoading ? 'Creating Account...' : 'Sign Up'}
+          </button>
+
+          {/* Login Link */}
+          <div className="text-center text-sm">
+            <span className="text-gray-300">Already have an account? </span>
+            <button
+              type="button"
+              onClick={() => navigate('/login')}
+              className="text-purple-400 hover:text-purple-300"
+            >
+              Log in
+            </button>
+          </div>
+        </form>
+
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+            <div className="flex flex-col items-center">
+              <div className="animate-spin-slow">
+                <div className="w-16 h-16 border-4 border-purple-500/20 border-t-purple-500 rounded-full"/>
+              </div>
+              <p className="mt-4 text-white animate-pulse">Creating your account...</p>
+            </div>
+          </div>
+        )}
+
+        <style>
+          {`
+            .gradient-text {
+              background: linear-gradient(
+                to right,
+                #a855f7,
+                #ec4899,
+                #ef4444
+              );
+              -webkit-background-clip: text;
+              background-clip: text;
+              color: transparent;
+            }
+
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+              }
+              to {
+                opacity: 1;
+              }
+            }
+
+            @keyframes slideUp {
+              from {
+                transform: translateY(20px);
+                opacity: 0;
+              }
+              to {
+                transform: translateY(0);
+                opacity: 1;
+              }
+            }
+
+            @keyframes spin-slow {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+
+            .animate-fadeIn {
+              animation: fadeIn 0.5s ease-out;
+            }
+
+            .animate-slideUp {
+              animation: slideUp 0.5s ease-out;
+            }
+
+            .animate-spin-slow {
+              animation: spin-slow 1.5s linear infinite;
+            }
+          `}
+        </style>
+      </div>
     </div>
   );
 };
 
-export default UploadCard;
+export default SignUp;

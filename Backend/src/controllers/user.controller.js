@@ -104,4 +104,28 @@ const getUser = asynchandler(async (req, res) => {
     }
 });
 
-export {RegisterUser,loginUser,getUser};
+const logoutUser = asynchandler(async (req, res) => {
+    try {
+      await User.findByIdAndUpdate(req.user._id, {
+        $unset: {
+         refreshToken: 1
+        }
+      }, {
+        new: true
+      });
+      const options = {
+        httpOnly: true,
+        secure: true
+      };
+ 
+  console.log("user logout done");
+      return res.status(200)
+        .clearCookie("accessToken", options).clearCookie("refreshToken", options)
+        .json(new Apiresponce(200, {}, "User logged out"));
+    } catch (error) {
+      return res.status(500).json(new Apiresponce(500, {}, "An error occurred during logout"));
+    }
+  });
+
+
+export {RegisterUser,loginUser,getUser,logoutUser};
