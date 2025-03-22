@@ -162,7 +162,7 @@ const AvailCard = () => {
               {/* Owner Row */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center py-3 border-b border-purple-500/10">
                 <span className="text-gray-400 font-medium">Owner</span>
-                <span className="sm:col-span-2 text-white">{data?.owner}</span>
+                <span className="sm:col-span-2 text-white">{data.owner}</span>
               </div>
 
               {/* Validity Row */}
