@@ -116,20 +116,17 @@ function Header() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-900/50 backdrop-blur-sm">
-              <Link to="/exchange" className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">
+              <Link to="/layout/" className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">
                 <span>🎟️</span>
                 <span>Exchange Cards</span>
               </Link>
-              <Link to="/deals" className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">
-                <span>💰</span>
-                <span>Best Deals</span>
-              </Link>
+            
               <div className="pt-4 space-y-3 px-3">
-                <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+                <button  onClick={() => navigate('uploadcard')}  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium">
                   Upload Card
                 </button>
-                <button className="w-full border-2 border-purple-500 text-purple-400 px-4 py-2 rounded-full text-sm font-medium">
-                  Login
+                <button  onClick={handleLogout} className="w-full border-2 border-purple-500 text-purple-400 px-4 py-2 rounded-full text-sm font-medium">
+                  Logout
                 </button>
               </div>
             </div>
