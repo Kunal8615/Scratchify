@@ -9,6 +9,7 @@ const AvailCard = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [showDescription, setShowDescription] = useState(false);
 
   // Company logos/icons mapping (you can add more)
   const companyIcons = {
@@ -171,10 +172,15 @@ const AvailCard = () => {
                 <span className="sm:col-span-2 text-white">{data?.validity}</span>
               </div>
 
-              {/* Description Row */}
+              {/* Description Row - Now Clickable */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center py-3 border-b border-purple-500/10">
                 <span className="text-gray-400 font-medium">Description</span>
-                <span className="sm:col-span-2 text-white">{data?.description}</span>
+                <span 
+                  onClick={() => setShowDescription(true)}
+                  className="sm:col-span-2 text-white cursor-pointer hover:text-purple-400 transition-colors line-clamp-2"
+                >
+                  {data?.description}
+                </span>
               </div>
             </div>
 
@@ -214,6 +220,38 @@ const AvailCard = () => {
             ✨ Card has been successfully claimed!
           </div>
         </div>
+
+        {/* Description Modal */}
+        {showDescription && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-gray-900 border border-purple-500/30 rounded-lg p-6 max-w-lg w-full mx-4 transform animate-fadeIn">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+                  {data?.company?.toUpperCase()} - Card Description
+                </h3>
+                <button 
+                  onClick={() => setShowDescription(false)}
+                  className="text-gray-400 hover:text-white"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-gray-300 mb-6">
+                {data?.description}
+              </p>
+              <button
+                onClick={() => setShowDescription(false)}
+                className="w-full px-4 py-2 rounded-lg
+                  bg-gradient-to-r from-purple-600 to-pink-600
+                  text-white text-sm font-medium
+                  hover:from-purple-700 hover:to-pink-700
+                  transition duration-200"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

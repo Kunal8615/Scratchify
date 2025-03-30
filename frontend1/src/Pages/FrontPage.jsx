@@ -173,12 +173,12 @@ function FrontPage() {
               <div className="absolute -inset-[2px] neon-border-green rounded-xl opacity-75 group-hover:opacity-100 group-active:opacity-100 blur-[2px] group-hover:blur-[3px]"></div>
               <div className="relative bg-black rounded-xl p-4 sm:p-5">
                 <div className="flex justify-between items-start mb-3 sm:mb-4">
-                  <span className="text-green-500 text-sm font-medium">Amazon</span>
+                  <span className="text-green-500 text-sm font-medium -green-400">Amazon</span>
                   <span className="bg-green-500/10 text-green-500 text-xs font-semibold px-2 py-1 rounded-full">
                     BEST
                   </span>
                 </div>
-                <Card company="amazone" className="w-full" />
+                <Card company="amazon" className="w-full" />
               </div>
             </div>
           </div>

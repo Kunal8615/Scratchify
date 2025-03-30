@@ -10,6 +10,8 @@ const Coupon = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
+  const [showDescription, setShowDescription] = useState(false);
+  const [selectedDescription, setSelectedDescription] = useState("");
 
   const decryptCard = async (cardId) => {
     try {
@@ -32,6 +34,12 @@ const Coupon = () => {
     } catch (error) {
       console.error("Error decrypting card:", error);
     }
+  };
+
+  const handleAvailClick = (cardId, description) => {
+    setSelectedDescription(description);
+    setShowDescription(true);
+    setSelectedCard(cardId);
   };
 
   const check = async (cardId) => {
@@ -134,7 +142,10 @@ const Coupon = () => {
                     </div>
 
                     {/* Description - Single Line */}
-                    <div className="text-gray-300 line-clamp-1 mb-4">
+                    <div 
+                      onClick={() => handleAvailClick(item._id, item.description)}
+                      className="text-gray-300 line-clamp-1 mb-4 cursor-pointer hover:text-blue-400 transition-colors"
+                    >
                       {item.description || "No description available"}
                     </div>
 
@@ -145,7 +156,7 @@ const Coupon = () => {
                       </span>
                       
                       <button
-                        onClick={() => check(item._id)}
+                        onClick={() => handleAvailClick(item._id, item.description)}
                         className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2"
                       >
                         <span>Avail</span>
@@ -196,6 +207,53 @@ const Coupon = () => {
           </div>
         </div>
       </div>
+
+      {/* Add Description Modal */}
+      {showDescription && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-gray-900 border border-blue-500/30 rounded-lg p-6 max-w-lg w-full mx-4 transform animate-fadeIn">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+                Card Description
+              </h3>
+              <button 
+                onClick={() => setShowDescription(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-gray-300 mb-6">
+              {selectedDescription}
+            </p>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => {
+                  setShowDescription(false);
+                  check(selectedCard);
+                }}
+                className="flex-1 px-4 py-2 rounded-lg
+                  bg-gradient-to-r from-cyan-500 to-blue-600
+                  text-white text-sm font-medium
+                  hover:from-cyan-600 hover:to-blue-700
+                  transition duration-200"
+              >
+                Proceed to Avail
+              </button>
+              <button
+                onClick={() => setShowDescription(false)}
+                className="flex-1 px-4 py-2 rounded-lg
+                  border border-gray-600
+                  text-gray-300 text-sm font-medium
+                  hover:bg-gray-800
+                  transition duration-200"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

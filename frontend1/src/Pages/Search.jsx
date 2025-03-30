@@ -7,6 +7,8 @@ const Search = () => {
   const [data, setData] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
+  const [showDescription, setShowDescription] = useState(false);
+  const [selectedDescription, setSelectedDescription] = useState("");
   const navigate = useNavigate();
 
   // API call function
@@ -55,9 +57,10 @@ const Search = () => {
   };
 
   // Modified check function with confirmation
-  const handleCardClick = (cardId) => {
+  const handleCardClick = (cardId, description) => {
     setSelectedCardId(cardId);
-    setShowConfirm(true);
+    setSelectedDescription(description);
+    setShowDescription(true);
   };
 
   const handleConfirm = async () => {
@@ -139,9 +142,12 @@ const Search = () => {
                 </span>
               </div>
 
-              {/* Description */}
+              {/* Description - now clickable */}
               <div className="flex-grow">
-                <p className="text-gray-300 line-clamp-2 min-h-[48px]">
+                <p 
+                  onClick={() => handleCardClick(item._id, item.description)}
+                  className="text-gray-300 line-clamp-2 min-h-[48px] cursor-pointer hover:text-purple-400"
+                >
                   {item.description}
                 </p>
               </div>
@@ -149,7 +155,7 @@ const Search = () => {
               {/* Button Section */}
               <div className="mt-6">
                 <button
-                  onClick={() => handleCardClick(item._id)}
+                  onClick={() => handleCardClick(item._id, item.description)}
                   className="w-full bg-gradient-to-r from-purple-600 to-pink-600 
                     hover:from-purple-700 hover:to-pink-700 text-white 
                     py-3 px-4 rounded-lg font-medium 
@@ -166,6 +172,45 @@ const Search = () => {
           </div>
         ))}
       </div>
+
+      {/* Description Modal */}
+      {showDescription && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-gray-900 border border-purple-500/30 rounded-lg p-6 max-w-lg w-full mx-4 transform animate-fadeIn">
+            <h3 className="text-xl font-bold text-white mb-4">
+              Card Description
+            </h3>
+            <p className="text-gray-300 mb-6">
+              {selectedDescription}
+            </p>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => {
+                  setShowDescription(false);
+                  setShowConfirm(true);
+                }}
+                className="flex-1 px-4 py-2 rounded-lg
+                  bg-gradient-to-r from-purple-600 to-pink-600
+                  text-white text-sm font-medium
+                  hover:from-purple-700 hover:to-pink-700
+                  transition duration-200"
+              >
+                Proceed
+              </button>
+              <button
+                onClick={() => setShowDescription(false)}
+                className="flex-1 px-4 py-2 rounded-lg
+                  border border-gray-600
+                  text-gray-300 text-sm font-medium
+                  hover:bg-gray-800
+                  transition duration-200"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Confirmation Modal */}
       {showConfirm && (

@@ -18,7 +18,7 @@ const Card = ({ company, className }) => {
     myntra: "text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-800",
     flipkart: "text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-800",
     ajio: "text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-500",
-    amazone: "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500"
+    amazon: "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500"
   };
 
   return (
@@ -75,6 +75,7 @@ const Card = ({ company, className }) => {
                             company === 'flipkart' ? 'rgba(34,211,238,0.1)' :
                             company === 'ajio' ? 'rgba(244,63,94,0.1)' :
                             'rgba(16,185,129,0.1)',
+                            
             borderColor: company === 'myntra' ? 'rgba(99,102,241,0.3)' :
                         company === 'flipkart' ? 'rgba(34,211,238,0.3)' :
                         company === 'ajio' ? 'rgba(244,63,94,0.3)' :
