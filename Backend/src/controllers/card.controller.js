@@ -136,7 +136,8 @@ const decryptCode = asynchandler(async (req, res) => {
         code: card.decryptCode(),
         owner: card.owner,
         validity: card.validity,
-        isPublished: card.isPublished
+        isPublished: card.isPublished,
+        createdAt: card.createdAt
     });
 
 

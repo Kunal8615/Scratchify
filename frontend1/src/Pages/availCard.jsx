@@ -141,6 +141,20 @@ const AvailCard = () => {
                 </span>
               </div>
 
+              {/* Add Upload Date Row - Add this new section */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center py-3 border-b border-purple-500/10">
+                <span className="text-gray-400 font-medium">Upload Date</span>
+                <span className="sm:col-span-2 text-white">
+                  {new Date(data?.createdAt).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </span>
+              </div>
+
               {/* Code Row */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center py-3 border-b border-purple-500/10">
                 <span className="text-gray-400 font-medium">Code</span>
