@@ -40,7 +40,7 @@ const SignUp = () => {
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Something went wrong ❌");
+      alert("Username or Email Already exist !❌");
     } finally {
       setIsLoading(false);
     }

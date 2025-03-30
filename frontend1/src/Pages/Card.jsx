@@ -72,12 +72,12 @@ const Card = ({ company, className }) => {
         <div className="mt-4 inline-block px-3 py-1 rounded-full bg-opacity-20 border"
           style={{
             backgroundColor: company === 'myntra' ? 'rgba(99,102,241,0.1)' :
-                            company === 'flipkart' ? 'rgba(34,211,238,0.1)' :
+                            company === 'flipkart' ? 'rgba(174, 177, 37, 0.1)' :
                             company === 'ajio' ? 'rgba(244,63,94,0.1)' :
                             'rgba(16,185,129,0.1)',
                             
             borderColor: company === 'myntra' ? 'rgba(99,102,241,0.3)' :
-                        company === 'flipkart' ? 'rgba(34,211,238,0.3)' :
+                        company === 'flipkart' ? 'rgba(238, 224, 34, 0.88)' :
                         company === 'ajio' ? 'rgba(244,63,94,0.3)' :
                         'rgba(16,185,129,0.3)'
           }}
